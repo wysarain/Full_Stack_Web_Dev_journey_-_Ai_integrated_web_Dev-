@@ -1,0 +1,2 @@
+ // Arrays are the most common data structure in JavaScript. They are used to store multiple values in a single variable. Arrays can hold values of any type, including numbers, strings, objects, and even other arrays.
+ // same type data in Arrays 
