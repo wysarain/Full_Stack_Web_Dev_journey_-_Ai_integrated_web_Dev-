@@ -51,6 +51,9 @@ console.log(s.charAt(2));
 
 console.log("Hi ".repeat(3));
 
+console.log("Hello".concat(" World"));
+
+
 let name="Ali";
 
 console.log(`Hello ${name}`);
