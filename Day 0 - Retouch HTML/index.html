@@ -15,7 +15,7 @@
       Engineer ↓ Backend / Cloud Engineer ↓ AI Product Engineer ↓ Scalable
       Systems Engineer.
     </h1>
-    <p class="roadmap">
+    <p id="roadmap-source" class="roadmap-source">
       STAGE 1 — COMPUTER + WEB FOUNDATION Pehle ye complete karo A. Internet
       Internet kaise work karta hai Client / Server IP DNS TCP/IP basics HTTP
       HTTPS Request / Response Headers Status Codes Cookies Sessions B.
@@ -283,5 +283,143 @@
       permanent goal of this roadmap. FINAL IDENTITY Full Stack Engineer ↓
       Backend / Cloud Engineer ↓ AI Product Engineer ↓ Scalable Systems Engineer
     </p>
+    <main
+      id="formatted-roadmap"
+      class="roadmap-container"
+      aria-live="polite"
+    ></main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const source = document.getElementById("roadmap-source");
+        const output = document.getElementById("formatted-roadmap");
+
+        if (!source || !output) return;
+
+        const escapeHtml = (value) =>
+          value.replace(
+            /[&<>"']/g,
+            (character) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;",
+              })[character],
+          );
+
+        const labels = [
+          "EXIT CONDITION",
+          "FINAL DESTINATION",
+          "FINAL IDENTITY",
+          "PROJECT LADDER",
+          "ONE FINAL CAPSTONE",
+          "WHAT TO MASTER",
+          "WHAT TO UNDERSTAND",
+          "WHAT NOT TO DO",
+          "THE LEARNING LOOP",
+          "THINK SCALABLE CHECKLIST",
+          "FINAL CAREER EVOLUTION",
+          "MASTER DEEPLY",
+          "STRONG UNDERSTANDING",
+          "JOB/DEMAND BASED",
+          "Projects",
+          "Project",
+          "Learn",
+          "Order",
+          "Goal",
+          "Rule",
+          "Build",
+          "Must include",
+        ];
+
+        const highlight = (value) => {
+          let result = escapeHtml(value);
+
+          labels
+            .sort((a, b) => b.length - a.length)
+            .forEach((label) => {
+              const safeLabel = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+              result = result.replace(
+                new RegExp(`(${safeLabel})`, "gi"),
+                '<strong class="roadmap-label">$1</strong>',
+              );
+            });
+
+          return result;
+        };
+
+        const sourceText = source.textContent.replace(/\s+/g, " ").trim();
+        const sections = sourceText.split(
+          /(?=\b(?:\d+\.\s*)?(?:STAGE\s+\d+\s+—|PROJECT LADDER|ONE FINAL CAPSTONE|DEGREE KO|YEAR-BY-YEAR|WHAT TO MASTER|WHAT NOT TO DO|THE LEARNING LOOP|THINK SCALABLE CHECKLIST|FINAL CAREER EVOLUTION|THE ONE-LINE ROADMAP|FINAL DESTINATION))/,
+        );
+
+        const headingPattern =
+          /^(?:\d+\.\s*)?((?:STAGE\s+\d+\s+—|PROJECT LADDER|ONE FINAL CAPSTONE|DEGREE KO|YEAR-BY-YEAR|WHAT TO MASTER|WHAT NOT TO DO|THE LEARNING LOOP|THINK SCALABLE CHECKLIST|FINAL CAREER EVOLUTION|THE ONE-LINE ROADMAP|FINAL DESTINATION)[A-Z0-9+./& —-]*?)(?=\s+[A-Z][a-z])/;
+
+        sections.forEach((sectionText, index) => {
+          const section = sectionText.trim();
+          if (!section) return;
+
+          const match = section.match(headingPattern);
+          const heading = match
+            ? match[1].trim()
+            : `ROADMAP SECTION ${index + 1}`;
+          const body = match ? section.slice(match[0].length).trim() : section;
+          const card = document.createElement("section");
+
+          card.className = "roadmap-card";
+          if (/YEAR-BY-YEAR/i.test(heading))
+            card.classList.add("timeline-card");
+          if (
+            /FINAL DESTINATION|ONE FINAL CAPSTONE|FINAL CAREER/i.test(heading)
+          ) {
+            card.classList.add("final-card");
+          }
+
+          const lines = body
+            .replace(
+              /\s+(?=(?:\d+\.\s|Level \d+\s+—|STEP \d+\s|20\d{2}))/g,
+              "\n",
+            )
+            .replace(
+              /\s+(?=(?:EXIT CONDITION|Projects?|Learn|Order|Goal|Rule|Build|Must include|Then:|Tools?:|Metrics?:))/g,
+              "\n",
+            )
+            .split("\n")
+            .map((line) => line.trim())
+            .filter(Boolean);
+
+          const content = document.createElement("div");
+          content.className = "roadmap-content";
+
+          let list;
+          lines.forEach((line) => {
+            const numbered = line.match(/^(\d+)\.\s+(.+)/);
+            if (numbered) {
+              if (!list) {
+                list = document.createElement("ol");
+                content.appendChild(list);
+              }
+              const item = document.createElement("li");
+              item.innerHTML = highlight(numbered[2]);
+              list.appendChild(item);
+            } else {
+              list = null;
+              const paragraph = document.createElement("p");
+              paragraph.innerHTML = highlight(line);
+              content.appendChild(paragraph);
+            }
+          });
+
+          card.innerHTML = `<h2>${escapeHtml(heading)}</h2>`;
+          card.appendChild(content);
+          output.appendChild(card);
+        });
+
+        source.hidden = true;
+      });
+    </script>
   </body>
 </html>
