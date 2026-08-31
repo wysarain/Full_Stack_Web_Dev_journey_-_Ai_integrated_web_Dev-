@@ -2,7 +2,7 @@
 
 A single-page, fully responsive site that presents the 35-stage engineering
 roadmap: **Full Stack Engineer → Backend Engineer → AI Product Engineer →
-Scalable Systems Engineer → AI Systems Architect**.
+Scalable Systems Engineer  > → AI Systems Architect**.
 
 Built as static HTML/CSS (no build step, no framework, no backend).
 
